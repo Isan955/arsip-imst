@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Bookmark;
 use App\Models\Information;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class BookmarkService
@@ -36,8 +37,22 @@ class BookmarkService
 
     public function getUserBookmarks(int $userId)
     {
-        return Information::whereHas('bookmarks', function ($query) use ($userId) {
+        $user = User::find($userId);
+        if (!$user) {
+            return collect();
+        }
+
+        $hasFullAccess = $user->hasFullAccess();
+        $allowedInfoIds = $hasFullAccess ? [] : $user->getAllowedInformationIds();
+
+        $query = Information::published()->whereHas('bookmarks', function ($query) use ($userId) {
             $query->where('user_id', $userId);
-        })->with('category')->get();
+        })->with('category');
+
+        if (!$hasFullAccess) {
+            $query->whereIn('id', $allowedInfoIds);
+        }
+
+        return $query->get();
     }
 }
