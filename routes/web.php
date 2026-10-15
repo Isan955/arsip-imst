@@ -9,7 +9,10 @@ use App\Http\Controllers\Admin\InformationController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\LogController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AttachmentController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect welcome page to login
@@ -36,6 +39,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
     Route::post('/bookmarks/toggle/{information_id}', [BookmarkController::class, 'toggle'])->name('bookmarks.toggle');
 
+    // Secure PDF streaming
+    Route::get('/attachments/stream/{id}', [AttachmentController::class, 'stream'])->name('attachments.stream');
+
     // Profile Settings
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -60,8 +66,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('informations/{information}/versions/{version}', [InformationController::class, 'destroyVersion'])->name('informations.versions.destroy');
     });
 
-    // Super Admin Only Panel (Banners, Settings, Logs, DB Backup/Restore)
+    // Super Admin Only Panel (Users, Banners, Settings, Logs, DB Backup/Restore)
     Route::middleware(['role:Super Admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('users', UserController::class)->except(['show']);
+        Route::get('users/{user}/access', [UserController::class, 'manageAccess'])->name('users.access');
+        Route::post('users/{user}/access', [UserController::class, 'updateAccess'])->name('users.access.update');
+
+        Route::resource('groups', GroupController::class)->except(['show']);
+        Route::get('groups/{group}/access', [GroupController::class, 'manageAccess'])->name('groups.access');
+        Route::post('groups/{group}/access', [GroupController::class, 'updateAccess'])->name('groups.access.update');
+
         Route::resource('banners', BannerController::class)->except(['show']);
         
         // System Settings
