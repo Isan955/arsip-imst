@@ -125,11 +125,11 @@ class InformationService
                 // Delete old attachment if exists for this version
                 $oldAttachment = Attachment::where('information_version_id', $version->id)->first();
                 if ($oldAttachment) {
-                    Storage::disk('public')->delete($oldAttachment->file_path);
+                    Storage::disk('local')->delete($oldAttachment->file_path);
                     $oldAttachment->delete();
                 }
 
-                $filePath = $attachmentFile->store('attachments', 'public');
+                $filePath = $attachmentFile->store('attachments', 'local');
                 Attachment::create([
                     'information_version_id' => $version->id,
                     'file_path' => $filePath,
@@ -154,7 +154,7 @@ class InformationService
             // Delete version attachments
             foreach ($information->versions as $version) {
                 foreach ($version->attachments as $attachment) {
-                    Storage::disk('public')->delete($attachment->file_path);
+                    Storage::disk('local')->delete($attachment->file_path);
                 }
             }
 

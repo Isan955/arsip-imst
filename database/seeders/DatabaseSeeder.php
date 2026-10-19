@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'superadmin@imst.com',
         ], [
             'name' => 'Super Admin IMST',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('superadminimst159'),
             'email_verified_at' => now(),
         ]);
         $superAdmin->syncRoles([$superAdminRole]);

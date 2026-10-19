@@ -150,7 +150,7 @@ class InformationController extends Controller
     {
         // Delete attachments
         foreach ($version->attachments as $attachment) {
-            Storage::disk('public')->delete($attachment->file_path);
+            Storage::disk('local')->delete($attachment->file_path);
         }
 
         $monthYear = "{$version->month}/{$version->year}";
