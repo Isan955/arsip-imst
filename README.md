@@ -9,7 +9,7 @@ _Dokumen Spesifikasi Teknis, Arsitektur Sistem, Skema Basis Data, dan Panduan De
 
 1. [Ringkasan Eksekutif & Karakteristik Sistem](#1-ringkasan-eksekutif--karakteristik-sistem)
 2. [Spesifikasi Teknologi (Tech Stack)](#2-spesifikasi-teknologi-tech-stack)
-3. [Arsitektur Sistem & Alur Kerja](#3-arsitektur-sistem--alur-kerja)
+3. [Arsitektur Keamanan & Otorisasi Berjenjang](#3-arsitektur-keamanan--otorisasi-berjenjang)
 4. [Struktur Rute & Endpoint (Routing Architecture)](#4-struktur-rute--endpoint-routing-architecture)
 5. [Komponen Antarmuka & Frontend (UI/UX)](#5-komponen-antarmuka--frontend-uiux)
 6. [Panduan Instalasi & Deployment](#6-panduan-instalasi--deployment)
